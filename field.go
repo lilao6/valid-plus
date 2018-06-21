@@ -4,7 +4,7 @@
  * license that can be found in the LICENSE file.
  */
 
-package filter
+package valid
 
 type Field struct {
 }

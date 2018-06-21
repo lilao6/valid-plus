@@ -63,11 +63,11 @@ func (r *InRule) Generate(value interface{}, tagValue string) error {
 		return errors.New("Generate In:Only basic data types are supported")
 	}
 
-	var ok bool
-	r.value, ok = value.(string)
-	if !ok {
-		return errors.New("Generate Email:the value generate failed")
-	}
+	//var ok bool
+	//r.value, ok = value.(string)
+	//if !ok {
+	//	return errors.New("Generate In:the value generate failed")
+	//}
 	return nil
 }
 

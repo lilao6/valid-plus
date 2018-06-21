@@ -9,11 +9,11 @@ package rule
 import (
 	"errors"
 	"regexp"
-	"golang.org/x/gofrontend/libgo/go/strconv"
+	"strconv"
 )
 
 /*
-* <p>移动：134(0-8)、135、136、137、138、139、147、150、151、152、157、158、159、178、182、183、184、187、188、198</p>
+* <p>移动：+86(86) 134(0-8)、135、136、137、138、139、147、150、151、152、157、158、159、178、182、183、184、187、188、198</p>
 * <p>联通：130、131、132、145、155、156、175、176、185、186、166</p>
 * <p>电信：133、153、173、177、180、181、189、199</p>
 * <p>全球星：1349</p>
@@ -38,9 +38,9 @@ func (r *PhoneRule) Generate(value interface{}, tagValue string) error {
 	switch value.(type) {
 	case string:
 		r.value = value.(string)
-	case int, int8, int16, int32, int64:
+	case int, int64:
 		r.value = strconv.FormatInt(intAll2int(value), 10)
-	case uint, uint8, uint16, uint32, uint64:
+	case uint, uint64:
 		r.value = strconv.FormatUint(uintAll2uint(value), 10)
 	default:
 		return errors.New("Generate Phone:Only number and string data types are supported")

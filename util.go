@@ -1,4 +1,4 @@
-package filter
+package valid
 
 import (
 	"fmt"
@@ -100,6 +100,8 @@ func IsReflectZeroValue(value reflect.Value) bool {
 		return temp == 0
 	case reflect.String:
 		return value.String() == ""
+	case reflect.Slice:
+		return value.Len() == 0
 	default:
 		return true
 	}
