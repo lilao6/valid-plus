@@ -1,12 +1,13 @@
-package filter
+package valid
 
 import (
 	"reflect"
-	"fmt"
 	"github.com/golyu/valid/rule"
 	"strings"
+	"fmt"
 	"strconv"
 	"errors"
+	"golang.org/x/gofrontend/libgo/libgo/go/log"
 )
 
 //
@@ -25,6 +26,7 @@ func (v *Validation) Valid(obj interface{}) (b bool, code int64, err error) {
 		err = fmt.Errorf("%v must be a struct or a struct pointer", obj)
 		return
 	}
+
 	for i := 0; i < objT.NumField(); i++ {
 		// 递归struct下的struct
 		if isStruct(objT.Field(i).Type) || isStructPtr(objT.Field(i).Type) {
@@ -41,6 +43,10 @@ func (v *Validation) Valid(obj interface{}) (b bool, code int64, err error) {
 		if !isMust && IsReflectZeroValue(objV.Field(i)) {
 			continue
 		}
+		//如果字段是私有 后面的省略
+		if !objV.Field(i).CanSet(){
+			continue
+		}
 		for _, r := range rules {
 			// 生成规则
 			err := r.Generate(objV.Field(i).Interface(), r.GetFullTag())
@@ -50,6 +56,9 @@ func (v *Validation) Valid(obj interface{}) (b bool, code int64, err error) {
 			// 校验规则
 			err = r.Valid()
 			if err != nil {
+				if rule.Model{
+					log.Println("rule valid err:",err.Error())
+				}
 				return false, errCode, nil
 			}
 		}

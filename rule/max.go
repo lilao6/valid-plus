@@ -92,7 +92,7 @@ func (r *MaxRule) Valid() error {
 		}
 	case []int, []int8, []int16, []int32, []int64, []uint, []uint8, []uint16, []uint32, []uint64, []string:
 		length := reflect.ValueOf(r.value).Len()
-		if int64(length) > r.max {
+		if uint64(length) > r.uMax {
 			return errors.New("Validation Max:the slice value length verification failed")
 		}
 	}

@@ -6,6 +6,13 @@
 
 package rule
 
+var Model bool
+
+const (
+	RULE_DEBUG = true
+	RULE_RELESE = false
+)
+
 func init() {
 	var rules = []Rule{
 		new(EmailRule),
@@ -16,6 +23,13 @@ func init() {
 		new(NumberRule),
 		new(OrRule),
 		new(PhoneRule),
+		new(LengthRule),
+		new(AlphaRule),
+		new(NumericRule),
+		new(AlphaDashRule),
+		new(Base64Rule),
+		new(TelRule),
+		new(ZipCodeRule),
 	}
 	for _, rule := range rules {
 		err := RegisterRule(rule)
@@ -24,4 +38,5 @@ func init() {
 			return
 		}
 	}
+	Model = RULE_RELESE
 }

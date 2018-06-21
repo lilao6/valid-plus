@@ -41,6 +41,8 @@ func GetRule(fullTag string) (Rule, error) {
 		// Max(1)     -->   max
 	} else if i := strings.Index(fullTag, TAG_PRE); i > 0 {
 		tag = fullTag[:i]
+	} else {
+		tag = fullTag
 	}
 	var rule Rule
 	temp, ok := rules.Load(tag)
