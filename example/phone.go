@@ -16,11 +16,13 @@ type TestPhone struct {
 func Test_Phone() {
 	v := new(valid.Validation)
 	success := TestPhone{
-		Phone: "15182652591",
+		Phone: "+8615182552591",
 		PhoneInt:15182652591,
 		PhoneInt64:15182652591,
 		PhoneUint:15182652591,
 		PhoneUint64:15182652591,
 	}
 	fmt.Println(v.Valid(&success))
+	fmt.Println(v.Valid(&TestPhone{Phone: "+8615182552591"}))
+	fmt.Println(v.Valid(&TestPhone{Phone: "8615182552591"}))
 }
