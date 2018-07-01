@@ -1,5 +1,5 @@
 ### valid
-一个golang请求数据校验框架,通过在struct的field上按照一定的规则编写tag,来校验请求的数据是否合法
+一个可扩展的golang请求数据校验框架,通过在struct的field上按照一定的规则编写tag,来校验请求的数据是否合法
 
 ### 安装或更新
 ```go
