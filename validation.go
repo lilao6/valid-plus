@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"strconv"
 	"errors"
-	"golang.org/x/gofrontend/libgo/libgo/go/log"
+	"log"
 )
 
 //
