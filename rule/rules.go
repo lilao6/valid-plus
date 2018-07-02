@@ -49,7 +49,7 @@ func GetRule(fullTag string) (Rule, error) {
 	if !ok {
 		return nil, errors.New("Get rule failure:The <" + fullTag + "> rule  does not exist")
 	}
-	rule = temp.(Rule)
+	rule = temp.(Rule).Clone()
 	rule.SetFullTag(fullTag)
 	return rule, nil
 }

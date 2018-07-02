@@ -22,6 +22,11 @@ type InRule struct {
 	FullTag
 }
 
+func (r *InRule) Clone() Rule {
+	clone := *r
+	return &clone
+}
+
 func (r *InRule) Tag() string {
 	return "In"
 }

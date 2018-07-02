@@ -19,6 +19,11 @@ type EmailRule struct {
 	FullTag
 }
 
+func (r *EmailRule) Clone() Rule {
+	clone := *r
+	return &clone
+}
+
 func (r *EmailRule) Tag() string {
 	return "Email"
 }

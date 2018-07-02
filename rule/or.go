@@ -18,6 +18,11 @@ type OrRule struct {
 	FullTag
 }
 
+func (r *OrRule) Clone() Rule {
+	clone := *r
+	return &clone
+}
+
 func (r *OrRule) Tag() string {
 	return "Or"
 }

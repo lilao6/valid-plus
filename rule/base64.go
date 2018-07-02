@@ -12,6 +12,11 @@ type Base64Rule struct {
 	FullTag
 }
 
+func (r *Base64Rule) Clone() Rule {
+	clone := *r
+	return &clone
+}
+
 func (r *Base64Rule) Tag() string {
 	return "Base64"
 }

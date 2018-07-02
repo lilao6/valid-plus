@@ -7,6 +7,11 @@ type AlphaRule struct {
 	FullTag
 }
 
+func (r *AlphaRule) Clone() Rule {
+	clone := *r
+	return &clone
+}
+
 func (r *AlphaRule) Tag() string {
 	return "Alpha"
 }

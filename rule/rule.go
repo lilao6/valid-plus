@@ -12,4 +12,5 @@ type Rule interface {
 	Valid() error
 	SetFullTag(tag string)
 	GetFullTag() string
+	Clone() Rule
 }

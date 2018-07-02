@@ -22,6 +22,11 @@ type MinRule struct {
 	FullTag
 }
 
+func (r *MinRule) Clone() Rule {
+	clone := *r
+	return &clone
+}
+
 func (r *MinRule) Tag() string {
 	return "Min"
 }

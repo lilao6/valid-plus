@@ -17,6 +17,11 @@ type NumberRule struct {
 	FullTag
 }
 
+func (r *NumberRule) Clone() Rule {
+	clone := *r
+	return &clone
+}
+
 func (r *NumberRule) Tag() string {
 	return "Number"
 }

@@ -19,6 +19,11 @@ type IpRule struct {
 	FullTag
 }
 
+func (r *IpRule) Clone() Rule {
+	clone := *r
+	return &clone
+}
+
 func (r *IpRule) Tag() string {
 	return "IP"
 }

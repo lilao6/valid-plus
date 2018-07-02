@@ -31,6 +31,11 @@ type QQRule struct {
 	rule.FullTag
 }
 
+func (r *QQRule) Clone() rule.Rule {
+	clone := *r
+	return &clone
+}
+
 var qqRegexp = regexp.MustCompile("[1-9][0-9]{4,14}")
 
 func (*QQRule) Tag() string {

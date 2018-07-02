@@ -13,6 +13,11 @@ type LengthRule struct {
 	FullTag
 }
 
+func (r *LengthRule) Clone() Rule {
+	clone := *r
+	return &clone
+}
+
 func (r *LengthRule) Tag() string {
 	return "Length"
 }

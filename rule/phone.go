@@ -27,6 +27,11 @@ type PhoneRule struct {
 	FullTag
 }
 
+func (r *PhoneRule) Clone() Rule {
+	clone := *r
+	return &clone
+}
+
 func (r *PhoneRule) Tag() string {
 	return "Phone"
 }

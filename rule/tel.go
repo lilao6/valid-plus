@@ -11,6 +11,11 @@ type TelRule struct {
 	FullTag
 }
 
+func (r *TelRule) Clone() Rule {
+	clone := *r
+	return &clone
+}
+
 /*
 * <p>区号+座机号码</p>
 */

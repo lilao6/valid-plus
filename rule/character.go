@@ -16,6 +16,11 @@ type CharacterRule struct {
 	FullTag
 }
 
+func (r *CharacterRule) Clone() Rule {
+	clone := *r
+	return &clone
+}
+
 func (r *CharacterRule) Tag() string {
 	return "Character"
 }

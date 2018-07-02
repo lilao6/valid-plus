@@ -13,6 +13,11 @@ type ZipCodeRule struct {
 	FullTag
 }
 
+func (r *ZipCodeRule) Clone() Rule {
+	clone := *r
+	return &clone
+}
+
 func (r *ZipCodeRule) Tag() string {
 	return "ZipCode"
 }

@@ -22,6 +22,11 @@ type MaxRule struct {
 	FullTag
 }
 
+func (r *MaxRule) Clone() Rule {
+	clone := *r
+	return &clone
+}
+
 func (r *MaxRule) Tag() string {
 	return "Max"
 }
