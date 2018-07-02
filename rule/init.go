@@ -10,7 +10,7 @@ var Model bool
 
 const (
 	RULE_DEBUG = true
-	RULE_RELESE = false
+	RULE_RELEASE = false
 )
 
 func init() {
@@ -25,8 +25,6 @@ func init() {
 		new(PhoneRule),
 		new(LengthRule),
 		new(AlphaRule),
-		new(NumericRule),
-		new(AlphaDashRule),
 		new(Base64Rule),
 		new(TelRule),
 		new(ZipCodeRule),
@@ -38,5 +36,5 @@ func init() {
 			return
 		}
 	}
-	Model = RULE_RELESE
+	Model = RULE_RELEASE
 }
