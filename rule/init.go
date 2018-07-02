@@ -28,6 +28,7 @@ func init() {
 		new(Base64Rule),
 		new(TelRule),
 		new(ZipCodeRule),
+		new(CharacterRule),
 	}
 	for _, rule := range rules {
 		err := RegisterRule(rule)

@@ -4,10 +4,10 @@ import (
 	"reflect"
 	"github.com/golyu/valid/rule"
 	"strings"
-	"fmt"
 	"strconv"
 	"errors"
 	"log"
+	"fmt"
 )
 
 //
@@ -80,11 +80,6 @@ func genRule(f reflect.StructField) (bool, int64, []rule.Rule, error) {
 		fs := strings.Split(tag, SPLIT_SEP)
 		if len(fs) > 0 {
 			for i, vTag := range fs {
-				// 是否必传
-				if i == 0 && fs[0] == MUST {
-					isMust = true
-					continue
-				}
 				switch i {
 				case 0: //首个,是否必传
 					if fs[0] == MUST {

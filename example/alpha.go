@@ -6,7 +6,7 @@ import (
 )
 
 type TestAlpha struct {
-	Alpha string `valid:"Alpha"`
+	Alpha string `valid:"Alpha;Character(U)"`
 }
 
 func Test_Alpha(){
