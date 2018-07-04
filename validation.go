@@ -40,11 +40,15 @@ func (v *Validation) Valid(obj interface{}) (b bool, code int64, err error) {
 			return false, 0, err
 		}
 		// 如果数据上没有加Must的tag,同时数据为零值,后面的校验都可以省略
-		if !isMust && IsReflectZeroValue(objV.Field(i)) {
-			continue
+		if IsReflectZeroValue(objV.Field(i)) {
+			if isMust {
+				return b, errCode, fmt.Errorf("value rule is must,but value is nill")
+			} else {
+				continue
+			}
 		}
 		//如果字段是私有 后面的省略
-		if !objV.Field(i).CanSet(){
+		if !objV.Field(i).CanInterface() {
 			continue
 		}
 		for _, r := range rules {
@@ -56,8 +60,8 @@ func (v *Validation) Valid(obj interface{}) (b bool, code int64, err error) {
 			// 校验规则
 			err = r.Valid()
 			if err != nil {
-				if rule.Model{
-					log.Println("rule valid err:",err.Error())
+				if rule.Model {
+					log.Println("rule valid err:", err.Error())
 				}
 				return false, errCode, nil
 			}
