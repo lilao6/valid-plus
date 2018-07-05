@@ -42,7 +42,7 @@ func (v *Validation) Valid(obj interface{}) (b bool, code int64, err error) {
 		// 如果数据上没有加Must的tag,同时数据为零值,后面的校验都可以省略
 		if IsReflectZeroValue(objV.Field(i)) {
 			if isMust {
-				return b, errCode, fmt.Errorf("value rule is must,but value is nill")
+				return b, errCode, nil
 			} else {
 				continue
 			}
