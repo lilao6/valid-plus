@@ -206,6 +206,11 @@ valid还支持灵活的拓展,如果你有新的校验规则需要加入,不需�
     func (*QQRule) Tag() string {
     	return "QQ"
     }
+    func (r *QQRule) Clone() rule.Rule {
+    	clone := *r
+    	return &clone
+    }
+
     
     func (r *QQRule) Generate(value interface{}, tagValue string) error {
     	if value == nil {
