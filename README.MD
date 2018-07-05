@@ -14,7 +14,7 @@ go get -u github.com/golyu/valid
 单个规则校验
 ```go
     type A struct{
-        Value  string   `Must;valid:"Max(5);ErrorCode(1111)"`// 最大长度为5
+        Value  string   `valid:"Must;Max(5);ErrorCode(1111)"`// 最大长度为5
     }
     v := new(valid.Validation)
     b, code, err:= v.Valid(&A{Value:"aaaaa"})
@@ -25,7 +25,7 @@ go get -u github.com/golyu/valid
 多个规则校验
 ```go
     type A struct {
-        Value  string   `Must;valid:"Max(5);Min(1);ErrorCode(1111)"`// 最大长度为5,最小长度为1
+        Value  string   `valid:"Must;Max(5);Min(1);ErrorCode(1111)"`// 最大长度为5,最小长度为1
     }
     v := new(valid.Validation)
     b, code, err:= v.Valid(&A{Value:"aaaaa"})
@@ -41,10 +41,10 @@ go get -u github.com/golyu/valid
 递归类型校验
 ```go
     type A struct {
-    		Sex int `Must;valid:"Max(2);Min(1);ErrorCode(1111)"` // 最大数值为2,最小数值为1
+    		Sex int `valid:"Must;Max(2);Min(1);ErrorCode(1111)"` // 最大数值为2,最小数值为1
     	}
     	type B struct {
-    		Age int `Must;valid:"Max(23);Min(18);ErrorCode(1111)"` // 最大长度为23,最小长度为18
+    		Age int `valid:"Must;Max(23);Min(18);ErrorCode(1111)"` // 最大长度为23,最小长度为18
     		A
     	}
     	v := new(valid.Validation)
