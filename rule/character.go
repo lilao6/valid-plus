@@ -66,19 +66,19 @@ func (r *CharacterRule) Valid() error {
 	switch r.characterType {
 	case arbitrarily:
 			for _, v := range r.character {
-				if !('A' < v && v < 'Z') && !('a' < v && v < 'z') {
+				if !('A' <= v && v <= 'Z') && !('a' <= v && v <= 'z') {
 					return errors.New("Validation Character:Data does not meet the goal")
 				}
 			}
 	case uppercase:
 		for _, v := range r.character {
-			if !('A' < v && v < 'Z') {
+			if !('A' <= v && v <= 'Z') {
 				return errors.New("Validation Character:Data does not meet the goal")
 			}
 		}
 	case lowercase:
 		for _, v := range r.character {
-			if !('a' < v && v < 'z') {
+			if !('a' <= v && v <= 'z') {
 				return errors.New("Validation Character:Data does not meet the goal")
 			}
 		}
