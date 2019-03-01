@@ -8,6 +8,7 @@ go get -u github.com/golyu/valid
 ### 注意
 
 框架使用了反射,甚至递归反射,对性能苛刻的项目,请慎重考虑,使用了beego,echo等框架请求数据绑定的框架,对请求数据需要递归校验的,需要修改框架源码实现递归绑定,如果框架不支持递归绑定,递归校验可能会无法通过
+尽量不要使用未命名结构体,否则规则不会做缓存,影响性能
 
 如果定义Must必须放在最前,ErrorCode必须放在最后
 ### 示例
@@ -234,3 +235,41 @@ valid还支持灵活的拓展,如果你有新的校验规则需要加入,不需�
     	return nil
     }
 ```       
+
+### Benchmark
+
+- v0.8
+
+>  BenchmarkMax-12                	   10000	    127881 ns/op	   38512 B/op	    1608 allocs/op
+> BenchmarkMin-12                	   10000	    131214 ns/op	   43672 B/op	    1858 allocs/op
+> BenchmarkLength-12             	  500000	      2546 ns/op	     920 B/op	      43 allocs/op
+> BenchmarkAlpha-12              	 1000000	      1341 ns/op	     592 B/op	      22 allocs/op
+> BenchmarkEmail-12              	 1000000	      1462 ns/op	     264 B/op	      18 allocs/op
+> BenchmarkIp-12                 	 1000000	      1632 ns/op	     268 B/op	      18 allocs/op
+> BenchmarkBase64-12             	 1000000	      2048 ns/op	     268 B/op	      18 allocs/op
+> BenchmarkTel-12                	 1000000	      1316 ns/op	     268 B/op	      18 allocs/op
+> BenchmarkZipCode-12            	 1000000	      1169 ns/op	     264 B/op	      18 allocs/op
+> BenchmarkPhone-12              	  200000	      8472 ns/op	    1635 B/op	     104 allocs/op
+> BenchmarkNumber-12             	 1000000	      1031 ns/op	     312 B/op	      19 allocs/op
+> BenchmarkIn-12                 	  200000	      7962 ns/op	    3592 B/op	     117 allocs/op
+> BenchmarkOr-12                 	  500000	      3377 ns/op	    1296 B/op	      58 allocs/op
+> BenchmarkCharacter-12          	  200000	      7796 ns/op	    2520 B/op	     131 allocs/op
+> BenchmarkCharacterNumber-12    	  200000	      6838 ns/op	    2016 B/op	     108 allocs/op
+
+- v0.9
+
+> BenchmarkMax-12                	   20000	     63141 ns/op	   27688 B/op	    1115 allocs/op
+> BenchmarkMin-12                	   20000	     70907 ns/op	   31152 B/op	    1285 allocs/op
+> BenchmarkLength-12             	 1000000	      1968 ns/op	     968 B/op	      34 allocs/op
+> BenchmarkAlpha-12              	 1000000	      1742 ns/op	     816 B/op	      26 allocs/op
+> BenchmarkEmail-12              	 1000000	      1311 ns/op	     320 B/op	      15 allocs/op
+> BenchmarkIp-12                 	 1000000	      1498 ns/op	     325 B/op	      15 allocs/op
+> BenchmarkBase64-12             	 1000000	      1925 ns/op	     325 B/op	      15 allocs/op
+> BenchmarkTel-12                	 1000000	      1182 ns/op	     326 B/op	      15 allocs/op
+> BenchmarkZipCode-12            	 1000000	      1007 ns/op	     352 B/op	      15 allocs/op
+> BenchmarkPhone-12              	  200000	      6589 ns/op	    1735 B/op	      77 allocs/op
+> BenchmarkNumber-12             	 2000000	       941 ns/op	     368 B/op	      16 allocs/op
+> BenchmarkIn-12                 	  200000	      5840 ns/op	    2184 B/op	      92 allocs/op
+> BenchmarkOr-12                 	  500000	      2885 ns/op	    1192 B/op	      48 allocs/op
+> BenchmarkCharacter-12          	  200000	      5610 ns/op	    2344 B/op	      98 allocs/op
+> BenchmarkCharacterNumber-12    	  300000	      5832 ns/op	    2136 B/op	      81 allocs/op

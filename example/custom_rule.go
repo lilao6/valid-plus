@@ -7,11 +7,10 @@
 package example
 
 import (
-	"github.com/golyu/valid/rule"
 	"errors"
-	"regexp"
 	"github.com/golyu/valid"
-	"fmt"
+	"github.com/golyu/valid/rule"
+	"regexp"
 )
 
 func customRule() {
@@ -21,8 +20,8 @@ func customRule() {
 	type Xx struct {
 		MyQQ string `valid:"Must;QQ;ErrorCode(1111)"`
 	}
-	v := new(valid.Validation)
-	fmt.Println(v.Valid(&Xx{MyQQ: "2131121212"}))
+	v := valid.NewValidation()
+	Println(v.Valid(&Xx{MyQQ: "2131121212"}))
 }
 
 // qq号码校验规则

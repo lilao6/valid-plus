@@ -2,7 +2,6 @@ package example
 
 import (
 	"github.com/golyu/valid"
-	"fmt"
 )
 
 type TestPhone struct {
@@ -13,16 +12,15 @@ type TestPhone struct {
 	PhoneUint64 uint64 `valid:"Phone"`
 }
 
-func Test_Phone() {
-	v := new(valid.Validation)
+func Test_Phone(v valid.IValidation) {
 	success := TestPhone{
-		Phone: "+8615182552591",
-		PhoneInt:15182652591,
-		PhoneInt64:15182652591,
-		PhoneUint:15182652591,
-		PhoneUint64:15182652591,
+		Phone:       "+8615182552591",
+		PhoneInt:    15182652591,
+		PhoneInt64:  15182652591,
+		PhoneUint:   15182652591,
+		PhoneUint64: 15182652591,
 	}
-	fmt.Println(v.Valid(&success))
-	fmt.Println(v.Valid(&TestPhone{Phone: "+8615182552591"}))
-	fmt.Println(v.Valid(&TestPhone{Phone: "8615182552591"}))
+	Println(v.Valid(&success))
+	Println(v.Valid(&TestPhone{Phone: "+8615182552591"}))
+	Println(v.Valid(&TestPhone{Phone: "8615182552591"}))
 }

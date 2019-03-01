@@ -2,7 +2,6 @@ package rule
 
 import (
 	"errors"
-	"fmt"
 )
 
 type CharacterNumberRule struct {
@@ -51,7 +50,6 @@ func (r *CharacterNumberRule) Generate(value interface{}, tagValue string) error
 		r.valueType = arbitrarily
 	}
 	return nil
-	return nil
 }
 
 func (r *CharacterNumberRule) Valid() error {
@@ -62,7 +60,6 @@ func (r *CharacterNumberRule) Valid() error {
 	case arbitrarily:
 		for _, v := range r.value {
 			if !('A' <= v && v <= 'Z') && !('a' <= v && v <= 'z') && !('0' <= v && v <= '9') {
-				fmt.Println(v)
 				return errors.New("Validation CharacterNumber:Data does not meet the goal")
 			}
 		}

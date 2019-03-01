@@ -2,7 +2,6 @@ package example
 
 import (
 	"github.com/golyu/valid"
-	"fmt"
 )
 
 type TestCharacterNumber struct {
@@ -11,12 +10,11 @@ type TestCharacterNumber struct {
 	Low   string `json:"value" valid:"CharacterNumber(L)"`
 }
 
-func Test_CharacterNumber() {
-	v := new(valid.Validation)
-	fmt.Println(v.Valid(&TestCharacterNumber{Value: "asZ09"}))
-	fmt.Println(v.Valid(&TestCharacterNumber{Up: "AZS09"}))
-	fmt.Println(v.Valid(&TestCharacterNumber{Low: "asz09"}))
-	fmt.Println(v.Valid(&TestCharacterNumber{Value: "asz,09"}))
-	fmt.Println(v.Valid(&TestCharacterNumber{Low: "Asz09"}))
-	fmt.Println(v.Valid(&TestCharacterNumber{Up: "AZSs09"}))
+func Test_CharacterNumber(v valid.IValidation) {
+	Println(v.Valid(&TestCharacterNumber{Value: "asZ09"}))
+	Println(v.Valid(&TestCharacterNumber{Up: "AZS09"}))
+	Println(v.Valid(&TestCharacterNumber{Low: "asz09"}))
+	Println(v.Valid(&TestCharacterNumber{Value: "asz,09"}))
+	Println(v.Valid(&TestCharacterNumber{Low: "Asz09"}))
+	Println(v.Valid(&TestCharacterNumber{Up: "AZSs09"}))
 }

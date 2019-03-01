@@ -2,7 +2,6 @@ package example
 
 import (
 	"github.com/golyu/valid"
-	"fmt"
 )
 
 type TestLength struct {
@@ -10,13 +9,12 @@ type TestLength struct {
 	LengthInterface []interface{} `valid:"Length(5)"`
 }
 
-func Test_Length() {
-	v := new(valid.Validation)
+func Test_Length(v valid.IValidation) {
 	success := TestLength{
-		LengthString: "测试成功",
-		LengthInterface:[]interface{}{1,2,3,4,5},
+		LengthString:    "测试成功",
+		LengthInterface: []interface{}{1, 2, 3, 4, 5},
 	}
-	fmt.Println(v.Valid(&success))
-	fmt.Println(v.Valid(&TestLength{LengthString:"测试失败情况"}))
-	fmt.Println(v.Valid(&TestLength{LengthInterface:[]interface{}{1,2}}))
+	Println(v.Valid(&success))
+	Println(v.Valid(&TestLength{LengthString: "测试失败情况"}))
+	Println(v.Valid(&TestLength{LengthInterface: []interface{}{1, 2}}))
 }

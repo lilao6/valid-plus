@@ -2,7 +2,6 @@ package example
 
 import (
 	"github.com/golyu/valid"
-	"fmt"
 )
 
 type TestMin struct {
@@ -29,8 +28,7 @@ type TestMin struct {
 	MinUints64 []uint64 `valid:"Min(5)"`
 }
 
-func Test_Min() {
-	v := new(valid.Validation)
+func Test_Min(v valid.IValidation) {
 	success := TestMin{
 		MinString:  "测试成功情况",
 		MinInt:     6,
@@ -54,29 +52,29 @@ func Test_Min() {
 		MinUints32: []uint32{1, 2, 3, 4, 5, 6},
 		MinUints64: []uint64{1, 2, 3, 4, 5, 6},
 	}
-	fmt.Println(v.Valid(&success))
-	fmt.Println(v.Valid(&TestMin{MinString: "测试失败"}))
-	fmt.Println(v.Valid(&TestMin{MinInt: 4}))
-	fmt.Println(v.Valid(&TestMin{MinInt8: 4}))
-	fmt.Println(v.Valid(&TestMin{MinInt16: 4}))
-	fmt.Println(v.Valid(&TestMin{MinInt32: 4}))
-	fmt.Println(v.Valid(&TestMin{MinInt64: 4}))
+	Println(v.Valid(&success))
+	Println(v.Valid(&TestMin{MinString: "测试失败"}))
+	Println(v.Valid(&TestMin{MinInt: 4}))
+	Println(v.Valid(&TestMin{MinInt8: 4}))
+	Println(v.Valid(&TestMin{MinInt16: 4}))
+	Println(v.Valid(&TestMin{MinInt32: 4}))
+	Println(v.Valid(&TestMin{MinInt64: 4}))
 
-	fmt.Println(v.Valid(&TestMin{MinUint: 4}))
-	fmt.Println(v.Valid(&TestMin{MinInt8: 4}))
-	fmt.Println(v.Valid(&TestMin{MinUint16: 4}))
-	fmt.Println(v.Valid(&TestMin{MinUint32: 4}))
-	fmt.Println(v.Valid(&TestMin{MinUint64: 4}))
+	Println(v.Valid(&TestMin{MinUint: 4}))
+	Println(v.Valid(&TestMin{MinInt8: 4}))
+	Println(v.Valid(&TestMin{MinUint16: 4}))
+	Println(v.Valid(&TestMin{MinUint32: 4}))
+	Println(v.Valid(&TestMin{MinUint64: 4}))
 
-	fmt.Println(v.Valid(&TestMin{MinInts: []int{1, 2, 3, 4}}))
-	fmt.Println(v.Valid(&TestMin{MinInts8: []int8{1, 2, 3, 4}}))
-	fmt.Println(v.Valid(&TestMin{MinInts16: []int16{1, 2, 3, 4}}))
-	fmt.Println(v.Valid(&TestMin{MinInts32: []int32{1, 2, 3, 4}}))
-	fmt.Println(v.Valid(&TestMin{MinInts64: []int64{1, 2, 3, 4}}))
+	Println(v.Valid(&TestMin{MinInts: []int{1, 2, 3, 4}}))
+	Println(v.Valid(&TestMin{MinInts8: []int8{1, 2, 3, 4}}))
+	Println(v.Valid(&TestMin{MinInts16: []int16{1, 2, 3, 4}}))
+	Println(v.Valid(&TestMin{MinInts32: []int32{1, 2, 3, 4}}))
+	Println(v.Valid(&TestMin{MinInts64: []int64{1, 2, 3, 4}}))
 
-	fmt.Println(v.Valid(&TestMin{MinUints: []uint{1, 2, 3, 4}}))
-	fmt.Println(v.Valid(&TestMin{MinUints8: []uint8{1, 2, 3, 4}}))
-	fmt.Println(v.Valid(&TestMin{MinUints16: []uint16{1, 2, 3, 4}}))
-	fmt.Println(v.Valid(&TestMin{MinUints32: []uint32{1, 2, 3, 4}}))
-	fmt.Println(v.Valid(&TestMin{MinUints64: []uint64{1, 2, 3, 4}}))
+	Println(v.Valid(&TestMin{MinUints: []uint{1, 2, 3, 4}}))
+	Println(v.Valid(&TestMin{MinUints8: []uint8{1, 2, 3, 4}}))
+	Println(v.Valid(&TestMin{MinUints16: []uint16{1, 2, 3, 4}}))
+	Println(v.Valid(&TestMin{MinUints32: []uint32{1, 2, 3, 4}}))
+	Println(v.Valid(&TestMin{MinUints64: []uint64{1, 2, 3, 4}}))
 }

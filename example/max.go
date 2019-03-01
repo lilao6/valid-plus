@@ -2,7 +2,6 @@ package example
 
 import (
 	"github.com/golyu/valid"
-	"fmt"
 )
 
 type TestMax struct {
@@ -29,8 +28,7 @@ type TestMax struct {
 	MaxUints64 []uint64 `valid:"Max(5)"`
 }
 
-func Test_Max() {
-	v := new(valid.Validation)
+func Test_Max(v valid.IValidation) {
 	success := TestMax{
 		MaxString:  "测试",
 		MaxInt:     1,
@@ -54,29 +52,29 @@ func Test_Max() {
 		MaxUints32: []uint32{1, 2, 3, 4},
 		MaxUints64: []uint64{1, 2, 3, 4},
 	}
-	fmt.Println(v.Valid(&success))
-	fmt.Println(v.Valid(&TestMax{MaxString: "测试不通过情况"}))
-	fmt.Println(v.Valid(&TestMax{MaxInt: 6}))
-	fmt.Println(v.Valid(&TestMax{MaxInt8: 6}))
-	fmt.Println(v.Valid(&TestMax{MaxInt16: 6}))
-	fmt.Println(v.Valid(&TestMax{MaxInt32: 6}))
-	fmt.Println(v.Valid(&TestMax{MaxInt64: 6}))
+	Println(v.Valid(&success))
+	Println(v.Valid(&TestMax{MaxString: "测试不通过情况"}))
+	Println(v.Valid(&TestMax{MaxInt: 6}))
+	Println(v.Valid(&TestMax{MaxInt8: 6}))
+	Println(v.Valid(&TestMax{MaxInt16: 6}))
+	Println(v.Valid(&TestMax{MaxInt32: 6}))
+	Println(v.Valid(&TestMax{MaxInt64: 6}))
 
-	fmt.Println(v.Valid(&TestMax{MaxUint: 6}))
-	fmt.Println(v.Valid(&TestMax{MaxInt8: 6}))
-	fmt.Println(v.Valid(&TestMax{MaxUint16: 6}))
-	fmt.Println(v.Valid(&TestMax{MaxUint32: 6}))
-	fmt.Println(v.Valid(&TestMax{MaxUint64: 6}))
+	Println(v.Valid(&TestMax{MaxUint: 6}))
+	Println(v.Valid(&TestMax{MaxInt8: 6}))
+	Println(v.Valid(&TestMax{MaxUint16: 6}))
+	Println(v.Valid(&TestMax{MaxUint32: 6}))
+	Println(v.Valid(&TestMax{MaxUint64: 6}))
 
-	fmt.Println(v.Valid(&TestMax{MaxInts: []int{1, 2, 3, 4, 5, 6}}))
-	fmt.Println(v.Valid(&TestMax{MaxInts8: []int8{1, 2, 3, 4, 5, 6}}))
-	fmt.Println(v.Valid(&TestMax{MaxInts16: []int16{1, 2, 3, 4, 5, 6}}))
-	fmt.Println(v.Valid(&TestMax{MaxInts32: []int32{1, 2, 3, 4, 5, 6}}))
-	fmt.Println(v.Valid(&TestMax{MaxInts64: []int64{1, 2, 3, 4, 5, 6}}))
+	Println(v.Valid(&TestMax{MaxInts: []int{1, 2, 3, 4, 5, 6}}))
+	Println(v.Valid(&TestMax{MaxInts8: []int8{1, 2, 3, 4, 5, 6}}))
+	Println(v.Valid(&TestMax{MaxInts16: []int16{1, 2, 3, 4, 5, 6}}))
+	Println(v.Valid(&TestMax{MaxInts32: []int32{1, 2, 3, 4, 5, 6}}))
+	Println(v.Valid(&TestMax{MaxInts64: []int64{1, 2, 3, 4, 5, 6}}))
 
-	fmt.Println(v.Valid(&TestMax{MaxUints: []uint{1, 2, 3, 4, 5, 6}}))
-	fmt.Println(v.Valid(&TestMax{MaxUints8: []uint8{1, 2, 3, 4, 5, 6}}))
-	fmt.Println(v.Valid(&TestMax{MaxUints16: []uint16{1, 2, 3, 4, 5, 6}}))
-	fmt.Println(v.Valid(&TestMax{MaxUints32: []uint32{1, 2, 3, 4, 5, 6}}))
-	fmt.Println(v.Valid(&TestMax{MaxUints64: []uint64{1, 2, 3, 4, 5, 6}}))
+	Println(v.Valid(&TestMax{MaxUints: []uint{1, 2, 3, 4, 5, 6}}))
+	Println(v.Valid(&TestMax{MaxUints8: []uint8{1, 2, 3, 4, 5, 6}}))
+	Println(v.Valid(&TestMax{MaxUints16: []uint16{1, 2, 3, 4, 5, 6}}))
+	Println(v.Valid(&TestMax{MaxUints32: []uint32{1, 2, 3, 4, 5, 6}}))
+	Println(v.Valid(&TestMax{MaxUints64: []uint64{1, 2, 3, 4, 5, 6}}))
 }

@@ -1,20 +1,31 @@
 package valid
 
 import (
-	"reflect"
-	"github.com/golyu/valid/rule"
-	"strings"
-	"strconv"
-	"errors"
-	"log"
 	"fmt"
+	"github.com/golyu/valid/rule"
+	"log"
+	"reflect"
+	"sync"
 )
 
-//
-type Validation struct {
+type IValidation interface {
+	Valid(obj interface{}) (b bool, code int64, err error) // -是否校验成功 -错误码 -错误信息
 }
 
-func (v *Validation) Valid(obj interface{}) (b bool, code int64, err error) {
+// 校验器对象
+type validation struct {
+	fieldTagRuleCache   map[string]RuleCache // 缓存了fields上的valid校验规则
+	fieldTagRuleCacheRW sync.RWMutex         // 读写锁
+}
+
+func NewValidation() IValidation {
+	//rule.Model = rule.RULE_DEBUG
+	return &validation{
+		fieldTagRuleCache: make(map[string]RuleCache),
+	}
+}
+
+func (v *validation) Valid(obj interface{}) (b bool, code int64, err error) {
 	objT := reflect.TypeOf(obj)
 	objV := reflect.ValueOf(obj)
 	switch {
@@ -26,23 +37,23 @@ func (v *Validation) Valid(obj interface{}) (b bool, code int64, err error) {
 		err = fmt.Errorf("%v must be a struct or a struct pointer", obj)
 		return
 	}
-
+	keyPrefix := objT.PkgPath() + "-" + objT.Name() + "-" // 给field缓存rule来使用
 	for i := 0; i < objT.NumField(); i++ {
-		// 递归struct下的struct
+		// 如果该field的类型是个struct或者struct的指针,则递归struct下的struct
 		if isStruct(objT.Field(i).Type) || isStructPtr(objT.Field(i).Type) {
 			b, code, err = v.Valid(objV.Field(i).Interface())
 			if !b {
 				return b, code, err
 			}
 		}
-		isMust, errCode, rules, err := genRule(objT.Field(i))
+		ruleCache, err := v.genRule(keyPrefix, objT.Field(i))
 		if err != nil {
 			return false, 0, err
 		}
 		// 如果数据上没有加Must的tag,同时数据为零值,后面的校验都可以省略
 		if IsReflectZeroValue(objV.Field(i)) {
-			if isMust {
-				return b, errCode, nil
+			if ruleCache.isMust {
+				return b, ruleCache.errCode, nil
 			} else {
 				continue
 			}
@@ -51,7 +62,7 @@ func (v *Validation) Valid(obj interface{}) (b bool, code int64, err error) {
 		if !objV.Field(i).CanInterface() {
 			continue
 		}
-		for _, r := range rules {
+		for _, r := range ruleCache.rules {
 			// 生成规则
 			err := r.Generate(objV.Field(i).Interface(), r.GetFullTag())
 			if err != nil {
@@ -63,53 +74,39 @@ func (v *Validation) Valid(obj interface{}) (b bool, code int64, err error) {
 				if rule.Model {
 					log.Println("rule valid err:", err.Error())
 				}
-				return false, errCode, nil
+				return false, ruleCache.errCode, nil
 			}
 		}
 	}
 	return true, 0, nil
 }
 
-// genRule 切割并生成各个规则,并获取是否存在必传和错误码
-// bool 是否必传
-// int64 错误码
-// []rule.Rule 规则
-// error 解析tag出错
-func genRule(f reflect.StructField) (bool, int64, []rule.Rule, error) {
-	var defaultCode int64 = 1000
-	var isMust bool // 是否必传
-	var rules = make([]rule.Rule, 0)
-	tag := f.Tag.Get(VALID_TAG)
-	if len(tag) > 0 {
-		fs := strings.Split(tag, SPLIT_SEP)
-		if len(fs) > 0 {
-			for i, vTag := range fs {
-				switch i {
-				case 0: //首个,是否必传
-					if fs[0] == MUST {
-						isMust = true
-						continue
-					}
-				case len(fs) - 1: // 最后一个,校验码
-					if strings.HasPrefix(vTag, "ErrorCode(") && strings.HasSuffix(vTag, ")") {
-						codeStr := vTag[10 : len(vTag)-1]
-						var err error
-						defaultCode, err = strconv.ParseInt(codeStr, 10, 64)
-						if err != nil {
-							return false, 0, nil, errors.New("Parse ErrorCode tag failure:" + vTag)
-						}
-						continue
-					}
-				}
-				// 解析单个
-				r, err := rule.GetRule(vTag)
-				if err != nil {
-					return false, 0, nil, errors.New("Parse rule tag failure:" + vTag)
-				}
-				rules = append(rules, r)
-			}
-
-		}
+func (v *validation) genRule(keyPrefix string, f reflect.StructField) (RuleCache, error) {
+	if keyPrefix == "--" {
+		// 使用了匿名结构体,反射不出pkg和struct name,对性能有影响,无法做缓存
+		return genRule(f)
 	}
-	return isMust, defaultCode, rules, nil
+	key := keyPrefix + f.Name
+	// 缓存查找
+	v.fieldTagRuleCacheRW.RLock()
+	ruleCache, ok := v.fieldTagRuleCache[key]
+	v.fieldTagRuleCacheRW.RUnlock()
+	if ok {
+		return ruleCache, nil
+	}
+	// 再次判断缓存,避免前一次等锁的时候,其它线程做了缓存功能,这次重复做工作
+	v.fieldTagRuleCacheRW.RLock()
+	ruleCache, ok = v.fieldTagRuleCache[key]
+	v.fieldTagRuleCacheRW.RUnlock()
+	if ok {
+		return ruleCache, nil
+	}
+	ruleCache, err := genRule(f)
+	if err != nil {
+		return RuleCache{}, err
+	}
+	v.fieldTagRuleCacheRW.Lock()
+	v.fieldTagRuleCache[key] = ruleCache
+	v.fieldTagRuleCacheRW.Unlock()
+	return ruleCache, nil
 }

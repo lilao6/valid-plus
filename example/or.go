@@ -2,16 +2,14 @@ package example
 
 import (
 	"github.com/golyu/valid"
-	"fmt"
 )
 
 type TestOr struct {
-	Or string `valid:"Or<Numeric Alpha>"`
+	Or string `valid:"Or<Number Alpha>"`
 }
 
-func Test_Or() {
-	v := new(valid.Validation)
-	fmt.Println(v.Valid(&TestOr{Or: "123"}))
-	fmt.Println(v.Valid(&TestOr{Or: "aaaa"}))
-	fmt.Println(v.Valid(&TestOr{Or: "123a"}))
+func Test_Or(v valid.IValidation) {
+	Println(v.Valid(&TestOr{Or: "123"}))
+	Println(v.Valid(&TestOr{Or: "aaaa"}))
+	Println(v.Valid(&TestOr{Or: "123a"}))
 }

@@ -7,8 +7,8 @@
 package example
 
 import (
-	"github.com/golyu/valid"
 	"fmt"
+	"github.com/golyu/valid"
 )
 
 func TestRecursive() {
@@ -19,11 +19,11 @@ func TestRecursive() {
 		Age int `Must;valid:"Max(23);Min(18);ErrorCode(1111)"` // 最大长度为23,最小长度为18
 		A
 	}
-	v := new(valid.Validation)
+	v := valid.NewValidation()
 	b, code, err := v.Valid(
 		&B{
 			Age: 15,
 			A:   A{Sex: 1},
 		})
-	fmt.Println(b,code,err)
+	fmt.Println(b, code, err)
 }

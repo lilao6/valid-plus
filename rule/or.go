@@ -14,7 +14,9 @@ import (
 // 满足一个条件就校验成功了,因为Or这个条件控制比较特殊,所以跟其他的不一样,使用Or<>包裹条件,各条件之间用空格符隔开
 // 例如,想要一个联系方式的字符串校验,这个联系方式可以是电话号码Phone,也可以是email,就可以写为 Or<Phone Email>
 type OrRule struct {
-	validFuncs []Rule
+	//childRules []Rule
+	childTags []string
+	value     interface{}
 	FullTag
 }
 
@@ -38,26 +40,27 @@ func (r *OrRule) Generate(value interface{}, tagValue string) error {
 	}
 	// Or<Phone Max(3)>  -->   []string{"Phone","max(3)"}
 	tagValues := strings.Split(tagValue[tagLen+1:tagValueLen-1], SPLIT_SEP_OR)
-
-	for _, tag := range tagValues {
-		rule, err := GetRule(tag)
-		if err != nil {
-			return errors.New("Generate Or:" + err.Error())
-		}
-		err = rule.Generate(value, tag)
-		if err != nil {
-			return errors.New("Generate Or:" + err.Error())
-		}
-		r.validFuncs = append(r.validFuncs, rule)
-	}
+	r.value = value
+	r.childTags = tagValues
 	return nil
 }
 
 func (r *OrRule) Valid() error {
 	var probe bool // 探针,只要一次成功就认为是成功了
 	var errTag []string
-	for _, rule := range r.validFuncs {
-		err := rule.Valid()
+	for _, tag := range r.childTags {
+		// 获取指定规则
+		rule, err := GetRule(tag)
+		if err != nil {
+			return errors.New("Generate Or:" + err.Error())
+		}
+		// 生成规则数据
+		err = rule.Generate(r.value, tag)
+		if err != nil {
+			return errors.New("Generate Or:" + err.Error())
+		}
+		// 校验规则
+		err = rule.Valid()
 		if err == nil {
 			probe = true
 		}
