@@ -26,19 +26,33 @@ func NewValidation() IValidation {
 }
 
 func (v *validation) Valid(obj interface{}) (b bool, code int64, err error) {
-	objT := reflect.TypeOf(obj)
 	objV := reflect.ValueOf(obj)
-	switch {
-	case isStruct(objT):
-	case isStructPtr(objT):
+	objT := objV.Type()
+	if isPtr(objT) {
 		objT = objT.Elem()
 		objV = objV.Elem()
+	}
+	switch {
+	case isStruct(objT):
+	case isSlice(objT):
+		for i := 0; i < objV.Len(); i++ {
+			indexObj := objV.Index(i)
+			b, code, err = v.Valid(indexObj.Interface())
+			if err != nil || !b {
+				return
+			}
+		}
+		return
 	default:
 		err = fmt.Errorf("%v must be a struct or a struct pointer", obj)
 		return
 	}
-	keyPrefix := objT.PkgPath() + "-" + objT.Name() + "-" // 给field缓存rule来使用
+	//keyPrefix := objT.PkgPath() + "-" + objT.Name() + "-" // 给field缓存rule来使用
+	keyPrefix := objV.Type().PkgPath() + "-" + objV.Type().Name() + "-" // 给field缓存rule来使用
 	for i := 0; i < objT.NumField(); i++ {
+		if !objV.Field(i).CanInterface() {
+			continue
+		}
 		// 如果该field的类型是个struct或者struct的指针,则递归struct下的struct
 		if isStruct(objT.Field(i).Type) || isStructPtr(objT.Field(i).Type) {
 			b, code, err = v.Valid(objV.Field(i).Interface())
