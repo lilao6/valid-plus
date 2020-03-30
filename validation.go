@@ -5,6 +5,7 @@ import (
 	"github.com/golyu/valid/rule"
 	"log"
 	"reflect"
+	"strings"
 	"sync"
 )
 
@@ -50,11 +51,14 @@ func (v *validation) Valid(obj interface{}) (b bool, code int64, err error) {
 	//keyPrefix := objT.PkgPath() + "-" + objT.Name() + "-" // 给field缓存rule来使用
 	keyPrefix := objV.Type().PkgPath() + "-" + objV.Type().Name() + "-" // 给field缓存rule来使用
 	for i := 0; i < objT.NumField(); i++ {
-		if !objV.Field(i).CanInterface() {
+		if !objV.Field(i).CanInterface() || strings.HasPrefix(objT.Field(i).Name, "XXX_") {
 			continue
 		}
 		// 如果该field的类型是个struct或者struct的指针,则递归struct下的struct
 		if isStruct(objT.Field(i).Type) || isStructPtr(objT.Field(i).Type) {
+			if objV.Field(i).Interface() == nil { // 如果这个结果的指针为空,就跳过
+				continue
+			}
 			b, code, err = v.Valid(objV.Field(i).Interface())
 			if !b {
 				return b, code, err
