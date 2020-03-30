@@ -56,7 +56,7 @@ func (v *validation) Valid(obj interface{}) (b bool, code int64, err error) {
 		}
 		// 如果该field的类型是个struct或者struct的指针,则递归struct下的struct
 		if isStruct(objT.Field(i).Type) || isStructPtr(objT.Field(i).Type) {
-			if objV.Field(i).Interface() == nil { // 如果这个结果的指针为空,就跳过
+			if !objV.Field(i).Elem().CanInterface() { // 如果这个结果的指针为空,就跳过
 				continue
 			}
 			b, code, err = v.Valid(objV.Field(i).Interface())
